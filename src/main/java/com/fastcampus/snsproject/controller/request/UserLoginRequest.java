@@ -1,5 +1,6 @@
 package com.fastcampus.snsproject.controller.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

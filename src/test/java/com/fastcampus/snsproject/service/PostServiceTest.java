@@ -39,7 +39,7 @@ public class PostServiceTest {
 
         //mocking
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(mock(UserEntity.class)));
-        when(postEntityRepository.save(any())).thenReturn(PostEntity.class);
+        when(postEntityRepository.save(any())).thenReturn(mock(PostEntity.class));
 
         Assertions.assertDoesNotThrow(() -> postService.create(title, body, userName));
     }

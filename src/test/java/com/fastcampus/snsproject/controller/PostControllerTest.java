@@ -5,6 +5,8 @@ import com.fastcampus.snsproject.controller.request.PostModifyRequest;
 import com.fastcampus.snsproject.controller.request.UserJoinRequest;
 import com.fastcampus.snsproject.exception.ErrorCode;
 import com.fastcampus.snsproject.exception.SnsApplicationException;
+import com.fastcampus.snsproject.fixture.PostEntityFixture;
+import com.fastcampus.snsproject.model.Post;
 import com.fastcampus.snsproject.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -76,6 +78,9 @@ public class PostControllerTest {
         String title = "title";
         String body = "body";
 
+        when(postService.modify(eq(title), eq(body), any(), any())).
+                thenReturn(Post.fromEntity(PostEntityFixture.get("userName", 1, 1)));
+
         mockMvc.perform(put("/api/v1/posts/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new PostModifyRequest(title, body)))
@@ -94,7 +99,7 @@ public class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new PostModifyRequest(title, body)))
                 ).andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

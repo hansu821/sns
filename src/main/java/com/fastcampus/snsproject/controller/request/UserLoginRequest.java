@@ -1,6 +1,5 @@
 package com.fastcampus.snsproject.controller.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserLoginRequest {
 
-    private String userName;
+    private String name;
     private String password;
 
 }

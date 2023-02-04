@@ -2,8 +2,10 @@ package com.fastcampus.snsproject.service;
 
 import com.fastcampus.snsproject.exception.ErrorCode;
 import com.fastcampus.snsproject.exception.SnsApplicationException;
+import com.fastcampus.snsproject.model.Alarm;
 import com.fastcampus.snsproject.model.User;
 import com.fastcampus.snsproject.model.entity.UserEntity;
+import com.fastcampus.snsproject.repository.AlarmEntityRepository;
 import com.fastcampus.snsproject.repository.UserEntityRepository;
 import com.fastcampus.snsproject.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserEntityRepository userEntityRepository;
+    private final AlarmEntityRepository alarmEntityRepository;
     private final BCryptPasswordEncoder encoder;
 
     @Value("${jwt.secret-key}")
@@ -48,7 +51,6 @@ public class UserService {
         return User.fromEntity(userEntity);
     }
 
-    // TODO : implement
     public String login(String userName, String password){
         // 회원가입 여부 체크
         UserEntity userEntity = userEntityRepository.findByUserName(userName).orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", userName)));
@@ -64,10 +66,9 @@ public class UserService {
         return token;
     }
 
-    // TODO : alarm return
-    public Page<Void> alarmList(String userName, Pageable pageable){
-
-        return Page.empty();
+    public Page<Alarm> alarmList(String userName, Pageable pageable){
+        UserEntity userEntity = userEntityRepository.findByUserName(userName).orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", userName)));
+        return alarmEntityRepository.findAllByUser(userEntity, pageable).map(Alarm::fromEntity);
     }
 
 }
